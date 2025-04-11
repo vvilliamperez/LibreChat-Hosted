@@ -17,6 +17,7 @@ export { default as MessagesSquared } from './MessagesSquared';
 export { default as StopGeneratingIcon } from './StopGeneratingIcon';
 export { default as RegenerateIcon } from './RegenerateIcon';
 export { default as ContinueIcon } from './ContinueIcon';
+export { default as SupabaseIcon } from './SupabaseIcon';
 export { default as GoogleIcon } from './GoogleIcon';
 export { default as FacebookIcon } from './FacebookIcon';
 export { default as OpenIDIcon } from './OpenIDIcon';
