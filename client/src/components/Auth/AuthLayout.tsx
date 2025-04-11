@@ -2,6 +2,7 @@ import { TranslationKeys, useLocalize } from '~/hooks';
 import { BlinkAnimation } from './BlinkAnimation';
 import { TStartupConfig } from 'librechat-data-provider';
 import SocialLoginRender from './SocialLoginRender';
+import SupabaseLoginRender from './SupabaseLoginRender';
 import { ThemeSelector } from '~/components/ui';
 import { Banner } from '../Banners';
 import Footer from './Footer';
@@ -87,7 +88,10 @@ function AuthLayout({
           {children}
           {!pathname.includes('2fa') &&
             (pathname.includes('login') || pathname.includes('register')) && (
-            <SocialLoginRender startupConfig={startupConfig} />
+            
+              <SupabaseLoginRender startupConfig={startupConfig} />
+              //<SocialLoginRender startupConfig={startupConfig} />
+            
           )}
         </div>
       </div>

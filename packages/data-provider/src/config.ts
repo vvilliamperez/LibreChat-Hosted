@@ -515,6 +515,9 @@ export type TStartupConfig = {
   googleLoginEnabled: boolean;
   openidLoginEnabled: boolean;
   appleLoginEnabled: boolean;
+  supabaseLoginEnabled: boolean;
+  supabaseLoginUrl: string;
+  supabaseKey: string;
   openidLabel: string;
   openidImageUrl: string;
   openidAutoRedirect: boolean;
