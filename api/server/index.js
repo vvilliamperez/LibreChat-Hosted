@@ -48,7 +48,11 @@ const startServer = async () => {
   /* Middleware */
   app.use(noIndex);
   app.use(errorController);
+
+  /* Payments webhook must be set up before express.json */
+  app.use('/api/payments_webhook', routes.payments_webhook);
   app.use(express.json({ limit: '3mb' }));
+
   app.use(mongoSanitize());
   app.use(express.urlencoded({ extended: true, limit: '3mb' }));
   app.use(staticCache(app.locals.paths.dist));

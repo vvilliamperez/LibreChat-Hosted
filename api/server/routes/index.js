@@ -27,6 +27,7 @@ const user = require('./user');
 const ask = require('./ask');
 const banner = require('./banner');
 const payments = require('./payments');
+const payments_webhook = require('./payments_webhook');
 
 module.exports = {
   ask,
@@ -58,4 +59,5 @@ module.exports = {
   staticRoute,
   banner,
   payments,
+  payments_webhook,
 };
