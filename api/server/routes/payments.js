@@ -9,6 +9,9 @@ router.post('/create-checkout-session', requireJwtAuth, async (req, res) => {
     const { productId, metadata } = req.body;
     const userId = req.user.id; // Get user ID from authenticated session
 
+    console.log('productId', productId);
+    console.log('metadata', metadata);
+    console.log('userId', userId);  
     // Get the frontend URL from environment variables with a fallback
     const frontendUrl = process.env.DOMAIN_CLIENT;
     
@@ -21,15 +24,25 @@ router.post('/create-checkout-session', requireJwtAuth, async (req, res) => {
       ? metadata.returnUrl
       : `${frontendUrl}/cancel`;
 
+    // Fetch the first available price for the product
+    const prices = await stripe.prices.list({
+      product: productId,
+      active: true,
+      limit: 1
+    });
+
+    if (!prices.data.length) {
+      throw new Error('No active prices found for this product');
+    }
+
+    const priceId = prices.data[0].id;
+
+    // Create the session with the server-side user ID
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
       line_items: [
         {
-          price_data: {
-            product: productId,
-            unit_amount: metadata.amount * 100, // Convert to cents
-            currency: 'usd',
-          },
+          price: priceId,
           quantity: 1,
         },
       ],
@@ -37,8 +50,8 @@ router.post('/create-checkout-session', requireJwtAuth, async (req, res) => {
       success_url: successUrl,
       cancel_url: cancelUrl,
       metadata: {
-        ...metadata,
-        userId, // Add user ID to metadata
+        userId, // Use the server-side verified user ID
+        returnUrl: metadata.returnUrl, // Keep the return URL from frontend
       },
     });
 

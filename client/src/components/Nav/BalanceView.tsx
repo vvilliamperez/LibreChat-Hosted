@@ -30,17 +30,20 @@ const BalanceBar = ({ balance }) => {
 
 export default function BalanceView({ open, onOpenChange, balance: initialBalance }) {
   const localize = useLocalize();
-  const { token } = useAuthContext();
+  const { token, user } = useAuthContext();
   const [isLoading, setIsLoading] = useState(false);
   const [localBalance, setLocalBalance] = useState(initialBalance);
 
   // Convert tokens to dollars for display
   const balanceInDollars = localBalance / 1000000;
 
-  const handlePurchase = async (productId: string, amount: number) => {
+  const handlePurchase = async (productId: string, dollar_amount: number) => {
     try {
       setIsLoading(true);
-      
+      console.log('priceId', productId);
+      console.log('token', token);
+      console.log('userId', user?.id);
+
       const response = await fetch('/api/payments/create-checkout-session', {
         method: 'POST',
         headers: {
@@ -50,8 +53,7 @@ export default function BalanceView({ open, onOpenChange, balance: initialBalanc
         body: JSON.stringify({ 
           productId: productId,
           metadata: {
-            amount,
-            tokens: amount * 1000000,
+            userId: user?.id,
             returnUrl: window.location.href
           }
         }),

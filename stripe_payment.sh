@@ -17,7 +17,8 @@ sleep 3
 
 # Trigger a test event with metadata using Stripe CLI
 echo "🧪 Triggering test checkout.session.completed event with metadata..."
-stripe trigger checkout.session.completed --add payment_intent:data.object.metadata.AccountID=abc123
+stripe trigger checkout.session.completed 
+
 
 # Optional: Keep the listener running or stop it
 read -p "Press Enter to stop Stripe webhook listener..."
