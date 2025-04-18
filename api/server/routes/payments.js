@@ -49,6 +49,7 @@ router.post('/create-checkout-session', requireJwtAuth, async (req, res) => {
       mode: 'payment',
       success_url: successUrl,
       cancel_url: cancelUrl,
+      client_reference_id: userId,
       metadata: {
         userId, // Use the server-side verified user ID
         returnUrl: metadata.returnUrl, // Keep the return URL from frontend

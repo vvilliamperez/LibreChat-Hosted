@@ -7,9 +7,9 @@ import { useState } from 'react';
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY || '');
 
 const PRODUCT_IDS = {
-  FIVE: 'prod_S8Xll00KkF8qlY',
-  TEN: 'prod_S8XlkZMk8dnfdR',
-  TWENTY_FIVE: 'prod_S8XmYxnNpZUuow',
+  FIVE: import.meta.env.VITE_PRODUCT_ID_5M,
+  TEN: import.meta.env.VITE_PRODUCT_ID_10M,
+  TWENTY_FIVE: import.meta.env.VITE_PRODUCT_ID_25M,
 };
 
 
@@ -53,7 +53,6 @@ export default function BalanceView({ open, onOpenChange, balance: initialBalanc
         body: JSON.stringify({ 
           productId: productId,
           metadata: {
-            userId: user?.id,
             returnUrl: window.location.href
           }
         }),
