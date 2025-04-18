@@ -1,10 +1,11 @@
 import { useRecoilState } from 'recoil';
 import * as Select from '@ariakit/react/select';
 import { Fragment, useState, memo } from 'react';
-import { FileText, LogOut } from 'lucide-react';
+import { FileText, LogOut, Wallet } from 'lucide-react';
 import { LinkIcon, GearIcon, DropdownMenuSeparator } from '~/components';
 import { useGetStartupConfig, useGetUserBalance } from '~/data-provider';
 import FilesView from '~/components/Chat/Input/Files/FilesView';
+import BalanceView from './BalanceView';
 import { useAuthContext } from '~/hooks/AuthContext';
 import useAvatar from '~/hooks/Messages/useAvatar';
 import { UserIcon } from '~/components/svg';
@@ -21,7 +22,7 @@ function AccountSettings() {
   });
   const [showSettings, setShowSettings] = useState(false);
   const [showFiles, setShowFiles] = useRecoilState(store.showFiles);
-
+  const [showBalance, setShowBalance] = useState(false);
   const avatarSrc = useAvatar(user);
   const name = user?.avatar ?? user?.username ?? '';
 
@@ -79,12 +80,19 @@ function AccountSettings() {
           balanceQuery.data != null &&
           !isNaN(parseFloat(balanceQuery.data)) && (
           <>
-            <div className="text-token-text-secondary ml-3 mr-2 py-2 text-sm" role="note">
-              {localize('com_nav_balance')}: {parseFloat(balanceQuery.data).toFixed(2)}
-            </div>
+
+            <Select.SelectItem
+              value=""
+              onClick={() => setShowBalance(true)}
+              className="select-item text-sm"
+            >
+              <Wallet className="icon-md" aria-hidden="true" />
+              {localize('com_nav_view_balance')}
+            </Select.SelectItem>
             <DropdownMenuSeparator />
           </>
         )}
+
         <Select.SelectItem
           value=""
           onClick={() => setShowFiles(true)}
@@ -124,6 +132,7 @@ function AccountSettings() {
       </Select.SelectPopover>
       {showFiles && <FilesView open={showFiles} onOpenChange={setShowFiles} />}
       {showSettings && <Settings open={showSettings} onOpenChange={setShowSettings} />}
+      {showBalance && <BalanceView open={showBalance} onOpenChange={setShowBalance} balance={balanceQuery.data} />}
     </Select.SelectProvider>
   );
 }
